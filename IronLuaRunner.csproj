@@ -103,21 +103,18 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Costura.Fody">
-      <Version>4.1.0</Version>
-    </PackageReference>
-    <PackageReference Include="Fody">
-      <Version>6.3.0</Version>
+      <Version>5.2.0</Version>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="KeraLua">
-      <Version>1.2.11</Version>
+      <Version>1.2.13</Version>
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json">
       <Version>12.0.3</Version>
     </PackageReference>
     <PackageReference Include="NLua">
-      <Version>1.5.6</Version>
+      <Version>1.5.7</Version>
     </PackageReference>
     <PackageReference Include="System.Data.SQLite">
       <Version>1.0.113.7</Version>

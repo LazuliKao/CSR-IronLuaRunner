@@ -85,14 +85,40 @@ namespace IronLuaRunner
                 }
                 else
                 {
-                    Console.WriteLine("[ILUAR] Hook[Teleport]未适配此版本。");
+
+                    var ptr = api.getSharePtr("PFEssentials.PublicApi.V2.Teleport");
+                    if (ptr != IntPtr.Zero)
+                    {
+                        var org = (Func<string, float, float, float, int, bool>)Marshal.GetObjectForIUnknown(ptr);
+                        org.Invoke(uuid, x, y, z, did);
+                        //if  api.COMMERCIAL then
+                        //	(uuid, x, y, z, did) |> api.teleport
+                        //	else
+                        //	let ptr:IntPtr = api.getSharePtr("PFEssentials.PublicApi.V2.Teleport")
+                        //		let mutable result = false
+                        //		if ptr <> IntPtr.Zero then
+                        //			let org = Runtime.InteropServices.Marshal.GetObjectForIUnknown(ptr):?> Func<string, single, single, single, int, bool>
+                        //			result < -((uuid, x, y, z, did) |> org.Invoke)
+                        //		if result |> not then
+                        //			AssertCommercial()
+                        //			(uuid, x, y, z, did) |> api.teleport
+                        //		else result
+                        //
+                        ////https://github.com/littlegao233/PFJSR/blob/main/src/PFJSR/NetJS/nativefunc.fs
+                        ////:834        
+                    }
+                    else
+                    {
+                        Console.WriteLine("[ILUAR] Hook[Teleport]未适配此版本。");
+                    }
                 }
             }
             public bool changeSeed(int fakeseed)
             {
-                return HideSeed.Fakeseed.init(api,fakeseed);
+                return HideSeed.Fakeseed.init(api, fakeseed);
             }
-            public string LibPATH {
+            public string LibPATH
+            {
                 get { return (string)CONFIGINI["LIBPATH"]; }
             }
             public string LuaPATH
@@ -232,7 +258,7 @@ DBG=False";
             string[] ini = File.ReadAllLines(settingpath);
             foreach (string i in ini)
             {
-                if(!i.StartsWith("#"))
+                if (!i.StartsWith("#"))
                 {
                     CONFIGINI[i.ToString().Split('=')[0]] = i.ToString().Split('=')[1];
                     Console.WriteLine("[ILUAR] {0} >> {1}", i.ToString().Split('=')[0], i.ToString().Split('=')[1]);
@@ -242,7 +268,7 @@ DBG=False";
             {
                 File.WriteAllText(settingpath, $"#配置文件版本，请勿乱动\nCONFIGVERSION={setingversion}\n#插件加载文件夹，若不存在需要自行创建\nLUAPATH={CONFIGINI["LUAPATH"]}\n#库文件所在文件夹，ILR会自动补全lua的库\nLIBPATH={CONFIGINI["LIBPATH"]}\n#是否自动更新\nAUTOUPDATE={CONFIGINI["AUTOUPDATE"]}\n#调试模式是否开启\nDBG={CONFIGINI["DBG"]}");
             }
-            
+
             new Thread(() =>
             {
                 var htool = new ILR.ToolFunc();
@@ -264,7 +290,7 @@ DBG=False";
                     Console.WriteLine(GetHasa("SXJvbkx1YVJ1bm5lciBsb2FkZWQhIGF1dGhvcjogU2Jhb29yIGdpdGh1YjpodHRwczovL2dpdGh1Yi5jb20vU2Jhb29yLWZseS9DU1ItSXJvbkx1YVJ1bm5lcg=="));
                 }
             }).Start();
-            if(!Directory.Exists((string)CONFIGINI["LUAPATH"]))
+            if (!Directory.Exists((string)CONFIGINI["LUAPATH"]))
             {
                 Directory.CreateDirectory((string)CONFIGINI["LUAPATH"]);
             }
@@ -287,7 +313,7 @@ DBG=False";
             {
                 try
                 {
-                    Console.WriteLine("[ILUAR] Load "+ (string)CONFIGINI["LUAPATH"] + file.Name);
+                    Console.WriteLine("[ILUAR] Load " + (string)CONFIGINI["LUAPATH"] + file.Name);
                     lua.DoFile(file.FullName);
                     Console.Write("[ILUAR] ");
                     Console.ForegroundColor = ConsoleColor.Cyan;
@@ -353,7 +379,7 @@ namespace CSR
             catch (Exception e)
             {
                 Console.WriteLine(e.ToString());
-            }            
+            }
             Console.WriteLine("[ILUAR]IronLuaRunner 装载完成");
         }
     }
